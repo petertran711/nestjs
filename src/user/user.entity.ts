@@ -1,10 +1,10 @@
-import { BaseEntity, Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
-@Entity('User')
 
-export class UserEntity extends BaseEntity {
+@Entity({ name: 'User' })
+export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -38,4 +38,5 @@ export class UserEntity extends BaseEntity {
     password: string;
 
     access_token?: string;
+
 }
