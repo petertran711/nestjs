@@ -1,13 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
+import { GenericEntity } from 'src/generic/generic.entity';
+import { Roles } from '../helper/constant';
+import { PostEntity } from '../post/post.entity';
 
 
 @Entity({ name: 'User' })
-export class UserEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
-
+export class UserEntity extends GenericEntity {
     @ApiProperty()
     @IsOptional()
     @Column({
@@ -26,9 +26,6 @@ export class UserEntity {
     @IsString()
     email: string;
 
-    @Column({ type: 'varchar', length: 500 })
-    salt: string;
-
     @ApiProperty()
     @Column({
         length: 250,
@@ -37,6 +34,17 @@ export class UserEntity {
     })
     password: string;
 
+    @ApiProperty()
+    @Column({ type: 'simple-array' })
+    role: Roles [];
+
+    @Column()
     access_token?: string;
+
+    @OneToMany(
+        () => PostEntity,
+        (post: PostEntity) => post.user
+    )
+    posts: PostEntity[];
 
 }
